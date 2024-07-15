@@ -1,0 +1,84 @@
+container: {type: ColumnPanel}
+components:
+- name: intro_text
+  properties: {}
+  type: RichText
+  layout_properties: {grid_position: 'ZLCHBC,DMTLRC'}
+- name: outlined_card_1
+  properties: {role: outlined-card}
+  type: ColumnPanel
+  layout_properties: {grid_position: 'OLMVBV,NYGJZB', full_width_row: true}
+  components:
+  - name: rich_text_1
+    properties: {}
+    type: RichText
+    layout_properties: {grid_position: 'AHGPGT,KCHOMT'}
+  - name: label_1
+    properties: {text: plaintext, role: body, foreground: 'theme:Outline'}
+    type: Label
+    layout_properties: {grid_position: 'UMGHPV,RUIYRH'}
+  - name: plaintext_textbox
+    properties: {height: 282.5555419921875, placeholder: '', auto_expand: true}
+    type: TextArea
+    layout_properties: {grid_position: 'AQWCXN,RIHKUW'}
+    data_bindings:
+    - {property: text, code: self.plaintext, writeback: true}
+    event_bindings: {change: plaintext_textbox_change}
+  - name: flow_panel_1
+    properties: {align: right}
+    type: FlowPanel
+    layout_properties: {grid_position: 'WNCFTZ,NPONWV'}
+    components:
+    - name: encrypt_button
+      properties: {text: Encrypt, role: outlined-button, icon: 'fa:lock', enabled: false, icon_align: right}
+      type: Button
+      layout_properties: {}
+      event_bindings: {click: encrypt_button_click}
+      data_bindings:
+      - {property: enabled, code: self.plaintext, writeback: false}
+  - name: label_3
+    properties: {text: conditions, role: body, foreground: 'theme:Outline'}
+    type: Label
+    layout_properties: {grid_position: 'ENIRGM,NVAAKL'}
+  - name: taco_conditions
+    properties: {}
+    type: form:dep_jocjz9be6vcnwh:taco.conditions.TacoConditions
+    layout_properties: {grid_position: 'BWYCTO,FJFRGJ'}
+- name: outlined_card_2
+  properties: {role: outlined-card}
+  type: ColumnPanel
+  layout_properties: {grid_position: 'OLMVBV,MIDAIC'}
+  components:
+  - name: rich_text_2
+    properties: {}
+    type: RichText
+    layout_properties: {grid_position: 'WVEXGI,CESTWB'}
+  - name: label_2
+    properties: {text: ciphertext, role: body, foreground: 'theme:Outline'}
+    type: Label
+    layout_properties: {grid_position: 'XWRYSI,OZNPKL'}
+  - name: ciphertext_textbox
+    properties: {height: 284, enabled: true, placeholder: '', visible: true, auto_expand: true}
+    type: TextArea
+    layout_properties: {grid_position: 'NVGDEM,HBBXPR'}
+    data_bindings:
+    - {property: text, code: self.ciphertext, writeback: false}
+    event_bindings: {}
+  - name: flow_panel_2
+    properties: {align: right}
+    type: FlowPanel
+    layout_properties: {grid_position: 'FUDESQ,GPJXDA'}
+    components:
+    - name: decrypt_button
+      properties:
+        text: |
+          Decrypt
+        role: outlined-button
+        icon: fa:unlock
+        enabled: false
+      type: Button
+      layout_properties: {}
+      event_bindings: {click: decrypt_button_click}
+      data_bindings:
+      - {property: enabled, code: self.ciphertext, writeback: false}
+is_package: true

@@ -7,16 +7,6 @@ from .. import session
 domain = taco.domains.TESTNET
 ritual_id = 0
 
-intro = """
-## TACO - Threshold Access Control
-
-This is a demonstration of decentralised, conditional encryption and decryption using [Threshold Access Control](https://docs.threshold.network/applications/threshold-access-control).
-
-It was built by [Empiria](https://www.empiria.co.uk) using the [Anvil](https://anvil.works) web application framework.
-
-**Note** This is a demo only. The encryption conditions are set on the [Polygon Amoy](https://polygon.technology/blog/introducing-the-amoy-testnet-for-polygon-pos) test network and nothing here is suitable for production use.
-"""
-
 encrypt_intro = """
 ### Encryption
 Enter your plaintext and set the conditions which must be met in order for the decryption key to be made available.
@@ -40,7 +30,6 @@ class Demo(DemoTemplate):
     def __init__(self, **properties):
         self.plaintext = None
         self.ciphertext = None
-        self.intro_text.content = intro
         self.rich_text_1.content = encrypt_intro
         self.rich_text_2.content = decrypt_intro
         self.init_components(**properties)

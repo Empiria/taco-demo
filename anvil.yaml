@@ -1,6 +1,6 @@
-allow_embedding: false
-package_name: Demo___Anvil_Dapps
-name: Demo - Anvil Dapps
+allow_embedding: true
+package_name: taco_demo
+name: Taco Demo
 startup_form: null
 renamed: true
 runtime_options:

@@ -1,6 +1,6 @@
 # TACo Demo
 
-Source code for the [Threshold Access Control Demo](https://taco-demo.empiria.co.uk).
+Source code for the [Threshold Access Control Demo](https://www.empiria.co.uk/en/projects/taco-demo/).
 
 This app uses [Anvil Dapps](https://github.com/Empiria/anvil-dapps) as a dependency to provide connection to an Ethereum wallet and the Threshold Network.
 

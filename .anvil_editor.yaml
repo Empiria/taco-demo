@@ -2,6 +2,8 @@ unique_ids:
   forms:
     Demo: '1719227425678590831868938.1782'
   modules:
+    services: '1721311442588216867746014.39816'
+    services.colours: '1721311462132687138173762.8104'
     session: '1719227655611689216127459.769'
   server_modules: {}
   assets:

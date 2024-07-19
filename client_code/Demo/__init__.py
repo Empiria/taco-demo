@@ -12,8 +12,10 @@ themes = {"dark": "Material Dark", "light": "Material Light"}
 
 
 def on_message(event):
-    if event.data and hasattr(event.data, "theme"):
+    try:
         switch_colour_scheme(themes[event.data.theme])
+    except Exception:
+        return
 
 
 def within_iframe():

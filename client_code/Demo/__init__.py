@@ -2,10 +2,23 @@ from ._anvil_designer import DemoTemplate
 from anvil_dapps import taco
 import anvil
 from .. import session
-
+from ..services.colours import switch_colour_scheme
+import anvil.js
 
 domain = taco.domains.TESTNET
 ritual_id = 0
+
+themes = {"dark": "Material Dark", "light": "Material Light"}
+
+
+def on_message(event):
+    if event.data and hasattr(event.data, "theme"):
+        switch_colour_scheme(themes[event.data.theme])
+
+
+def within_iframe():
+    return anvil.js.window != anvil.js.window.parent
+
 
 encrypt_intro = """
 ### Encryption
@@ -32,6 +45,9 @@ class Demo(DemoTemplate):
         self.ciphertext = None
         self.rich_text_1.content = encrypt_intro
         self.rich_text_2.content = decrypt_intro
+        if within_iframe():
+            anvil.js.window.addEventListener("message", on_message)
+            anvil.js.window.parent.postMessage({"requestTheme": True}, "*")
         self.init_components(**properties)
 
     def encrypt_button_click(self, **event_args):
@@ -43,7 +59,9 @@ class Demo(DemoTemplate):
                 session.wallet.provider, domain, self.plaintext, condition, ritual_id
             )
         except ValueError as e:
-            anvil.Notification(str(e), title="Encryption failed", style="danger", timeout=None).show()
+            anvil.Notification(
+                str(e), title="Encryption failed", style="danger", timeout=None
+            ).show()
         self.plaintext = None
         self.refresh_data_bindings()
 
@@ -54,15 +72,22 @@ class Demo(DemoTemplate):
         self.refresh_data_bindings()
         try:
             with anvil.Notification("Decrypting...", title="Please wait"):
-                self.plaintext = taco.decrypt(session.wallet.provider, domain, ciphertext)
+                self.plaintext = taco.decrypt(
+                    session.wallet.provider, domain, ciphertext
+                )
             self.ciphertext = None
         except ValueError as e:
-            anvil.Notification(str(e), title="Decryption failed", style="danger", timeout=None).show()
+            anvil.Notification(
+                str(e), title="Decryption failed", style="danger", timeout=None
+            ).show()
         self.refresh_data_bindings()
 
     def textbox_change(self, **event_args):
         self.refresh_data_bindings()
 
-    def plaintext_textbox_change(self, sender,**event_args):
+    def plaintext_textbox_change(self, sender, **event_args):
         self.plaintext = sender.text
         self.refresh_data_bindings()
+
+    def colours_button_click(self, **event_args):
+        self.cycle_colour_scheme()

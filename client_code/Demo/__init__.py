@@ -7,6 +7,7 @@ import anvil.js
 
 domain = taco.domains.TESTNET
 ritual_id = 0
+uri = taco.get_porter_uri(domain)
 
 themes = {"dark": "Material Dark", "light": "Material Light"}
 
@@ -44,7 +45,7 @@ If the conditions are met and decryption is successful, you'll see the orginal p
 class Demo(DemoTemplate):
     def __init__(self, **properties):
         self.plaintext = None
-        self.ciphertext = None
+        self.message_kit = None
         self.rich_text_1.content = encrypt_intro
         self.rich_text_2.content = decrypt_intro
         if within_iframe():
@@ -52,13 +53,22 @@ class Demo(DemoTemplate):
             anvil.js.window.parent.postMessage({"requestTheme": True}, "*")
         self.init_components(**properties)
 
+    @property
+    def ciphertext(self):
+        return self.message_kit.toBytes().hex() if self.message_kit else None
+
     def encrypt_button_click(self, **event_args):
         if session.wallet is None:
             session.set_wallet()
         condition = self.taco_conditions.result
         try:
-            self.ciphertext = taco.encrypt(
-                session.wallet.provider, domain, self.plaintext, condition, ritual_id
+            self.message_kit = taco.encrypt(
+                session.web3_provider,
+                domain,
+                self.plaintext.encode(),
+                condition,
+                ritual_id,
+                session.signer,
             )
         except ValueError as e:
             anvil.Notification(
@@ -70,14 +80,13 @@ class Demo(DemoTemplate):
     def decrypt_button_click(self, **event_args):
         if session.wallet is None:
             session.set_wallet()
-        ciphertext = self.ciphertext
         self.refresh_data_bindings()
         try:
             with anvil.Notification("Decrypting...", title="Please wait"):
                 self.plaintext = taco.decrypt(
-                    session.wallet.provider, domain, ciphertext
-                )
-            self.ciphertext = None
+                    session.web3_provider, domain, self.message_kit, uri, session.signer
+                ).decode()
+            self.message_kit = None
         except ValueError as e:
             anvil.Notification(
                 str(e), title="Decryption failed", style="danger", timeout=None

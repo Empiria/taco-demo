@@ -36,10 +36,10 @@ components:
     properties: {text: conditions, role: body, foreground: 'theme:Outline'}
     type: Label
     layout_properties: {grid_position: 'ENIRGM,NVAAKL'}
-  - name: taco_conditions
+  - name: taco_conditions_1
     properties: {}
-    type: form:dep_jocjz9be6vcnwh:taco.conditions.TacoConditions
-    layout_properties: {grid_position: 'BWYCTO,FJFRGJ'}
+    type: form:dep_jocjz9be6vcnwh:components.TacoConditions
+    layout_properties: {grid_position: 'VFYNDS,YYWUZA'}
 - name: outlined_card_2
   properties: {role: outlined-card}
   type: ColumnPanel

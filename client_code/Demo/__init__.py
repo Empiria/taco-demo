@@ -5,9 +5,6 @@ from .. import session
 from ..services.colours import switch_colour_scheme
 import anvil.js
 
-domain = taco.domains.TESTNET
-ritual_id = 0
-uri = taco.get_porter_uri(domain)
 
 themes = {"dark": "Material Dark", "light": "Material Light"}
 
@@ -64,10 +61,10 @@ class Demo(DemoTemplate):
         try:
             self.message_kit = taco.encrypt(
                 session.web3_provider,
-                domain,
+                session.domain,
                 self.plaintext.encode(),
                 condition,
-                ritual_id,
+                session.ritual_id,
                 session.signer,
             )
         except ValueError as e:
@@ -84,7 +81,7 @@ class Demo(DemoTemplate):
         try:
             with anvil.Notification("Decrypting...", title="Please wait"):
                 self.plaintext = taco.decrypt(
-                    session.web3_provider, domain, self.message_kit, uri, session.signer
+                    session.web3_provider, session.domain, self.message_kit, session.porter_uri, session.signer
                 ).decode()
             self.message_kit = None
         except ValueError as e:
@@ -99,6 +96,3 @@ class Demo(DemoTemplate):
     def plaintext_textbox_change(self, sender, **event_args):
         self.plaintext = sender.text
         self.refresh_data_bindings()
-
-    def colours_button_click(self, **event_args):
-        self.cycle_colour_scheme()

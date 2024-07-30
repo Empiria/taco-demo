@@ -38,8 +38,8 @@ components:
     layout_properties: {grid_position: 'ENIRGM,NVAAKL'}
   - name: taco_conditions
     properties: {}
-    type: form:dep_jocjz9be6vcnwh:taco.conditions.TacoConditions
-    layout_properties: {grid_position: 'BWYCTO,FJFRGJ'}
+    type: form:dep_jocjz9be6vcnwh:components.TacoConditions
+    layout_properties: {grid_position: 'VFYNDS,YYWUZA'}
 - name: outlined_card_2
   properties: {role: outlined-card}
   type: ColumnPanel

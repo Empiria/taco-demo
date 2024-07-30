@@ -5,8 +5,6 @@ from .. import session
 from ..services.colours import switch_colour_scheme
 import anvil.js
 
-domain = taco.domains.TESTNET
-ritual_id = 0
 
 themes = {"dark": "Material Dark", "light": "Material Light"}
 
@@ -44,7 +42,7 @@ If the conditions are met and decryption is successful, you'll see the orginal p
 class Demo(DemoTemplate):
     def __init__(self, **properties):
         self.plaintext = None
-        self.ciphertext = None
+        self.message_kit = None
         self.rich_text_1.content = encrypt_intro
         self.rich_text_2.content = decrypt_intro
         if within_iframe():
@@ -52,13 +50,22 @@ class Demo(DemoTemplate):
             anvil.js.window.parent.postMessage({"requestTheme": True}, "*")
         self.init_components(**properties)
 
+    @property
+    def ciphertext(self):
+        return self.message_kit.toBytes().hex() if self.message_kit else None
+
     def encrypt_button_click(self, **event_args):
         if session.wallet is None:
             session.set_wallet()
         condition = self.taco_conditions.result
         try:
-            self.ciphertext = taco.encrypt(
-                session.wallet.provider, domain, self.plaintext, condition, ritual_id
+            self.message_kit = taco.encrypt(
+                session.web3_provider,
+                session.domain,
+                self.plaintext.encode(),
+                condition,
+                session.ritual_id,
+                session.signer,
             )
         except ValueError as e:
             anvil.Notification(
@@ -70,14 +77,13 @@ class Demo(DemoTemplate):
     def decrypt_button_click(self, **event_args):
         if session.wallet is None:
             session.set_wallet()
-        ciphertext = self.ciphertext
         self.refresh_data_bindings()
         try:
             with anvil.Notification("Decrypting...", title="Please wait"):
                 self.plaintext = taco.decrypt(
-                    session.wallet.provider, domain, ciphertext
-                )
-            self.ciphertext = None
+                    session.web3_provider, session.domain, self.message_kit, session.porter_uri, session.signer
+                ).decode()
+            self.message_kit = None
         except ValueError as e:
             anvil.Notification(
                 str(e), title="Decryption failed", style="danger", timeout=None
@@ -90,6 +96,3 @@ class Demo(DemoTemplate):
     def plaintext_textbox_change(self, sender, **event_args):
         self.plaintext = sender.text
         self.refresh_data_bindings()
-
-    def colours_button_click(self, **event_args):
-        self.cycle_colour_scheme()

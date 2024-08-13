@@ -11,7 +11,7 @@ runtime_options:
   legacy_features: {class_names: true, bootstrap3: true, __dict__: true, root_container: true}
 dependencies:
 - dep_id: dep_jocjz9be6vcnwh
-  version: {version_tag: v0.1.4}
+  version: {version_tag: v0.1.6}
   resolution_hints: {app_id: RK36FKDUFUF2SV2C, name: Anvil Dapps, package_name: anvil_dapps}
 - dep_id: dep_sw407yi3rbcbq
   version: {dev: false}

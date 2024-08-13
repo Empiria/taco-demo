@@ -117,3 +117,6 @@ class Demo(DemoTemplate):
     def log_visibility_button_click(self, **event_args):
         self.log_visible = not self.log_visible
         self.refresh_data_bindings()
+
+    def taco_conditions_conditions_changed(self, **event_args):
+        self.refresh_data_bindings()

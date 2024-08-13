@@ -1,11 +1,13 @@
-from ._anvil_designer import DemoTemplate
-from anvil_dapps import taco
+from time import time
+
 import anvil
-from app import session
-from app.services.colours import switch_colour_scheme
 import anvil.js
-from time import time 
+from anvil_dapps import taco
+from app.globals import session
+from app.services.colours import switch_colour_scheme
 from app.services.logging import Logger
+
+from ._anvil_designer import DemoTemplate
 
 themes = {"dark": "Material Dark", "light": "Material Light"}
 
@@ -77,7 +79,9 @@ class Demo(DemoTemplate):
                 session.signer,
             )
             finished_at = time()
-            self.logger.log(f"Encryption completed in {(finished_at - started_at):.2f}s")
+            self.logger.log(
+                f"Encryption completed in {(finished_at - started_at):.2f}s"
+            )
         except ValueError as e:
             anvil.Notification(
                 str(e), title="Encryption failed", style="danger", timeout=None
@@ -93,10 +97,16 @@ class Demo(DemoTemplate):
             with anvil.Notification("Decrypting...", title="Please wait"):
                 started_at = time()
                 self.plaintext = taco.decrypt(
-                    session.web3_provider, session.domain, self.message_kit, session.porter_uri, session.signer
+                    session.web3_provider,
+                    session.domain,
+                    self.message_kit,
+                    session.porter_uri,
+                    session.signer,
                 ).decode()
                 finished_at = time()
-            self.logger.log(f"Decryption completed in {(finished_at - started_at):.2f}s")
+            self.logger.log(
+                f"Decryption completed in {(finished_at - started_at):.2f}s"
+            )
             self.message_kit = None
         except ValueError as e:
             anvil.Notification(

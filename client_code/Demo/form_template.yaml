@@ -33,7 +33,7 @@ components:
       layout_properties: {}
       event_bindings: {click: encrypt_button_click}
       data_bindings:
-      - {property: enabled, code: self.plaintext, writeback: false}
+      - {property: enabled, code: self.plaintext and self.taco_conditions.result, writeback: false}
   - name: label_3
     properties: {text: conditions, role: body, foreground: 'theme:Outline'}
     type: Label
@@ -42,6 +42,7 @@ components:
     properties: {}
     type: form:dep_jocjz9be6vcnwh:components.TacoConditions
     layout_properties: {grid_position: 'VFYNDS,YYWUZA'}
+    event_bindings: {conditions_changed: taco_conditions_conditions_changed}
 - name: ciphertext_card
   properties: {role: outlined-card}
   type: ColumnPanel
